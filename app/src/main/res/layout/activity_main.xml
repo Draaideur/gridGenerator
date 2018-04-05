@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.infinitesheep.gridgenerator.MainActivity">
+    tools:context="com.infinitesheep.gridgenerator.MainActivity"
+    android:orientation="vertical"
+    android:background="@color/black">
 
-    <TextView
+    <com.infinitesheep.gridgenerator.SquareLinearLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" />
+
+    <Button
+        android:id="@+id/regenerate_button_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center_horizontal"
+        android:text="Regenerate! (5x5)"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/regenerate_button_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Regenerate! (6x6)"/>
+
+    <Button
+        android:id="@+id/regenerate_button_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Regenerate! (7x7)"/>
+
+</LinearLayout>

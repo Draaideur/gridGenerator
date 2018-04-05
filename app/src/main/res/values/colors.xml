@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="emptyGridCell">#BBBBBB</color>
+    <color name="redGridCell">#FF4433</color>
+    <color name="blueGridCell">#4455FF</color>
+    <color name="blackGridCell">#444444</color>
+
+    <color name="black">#000000</color>
 </resources>
