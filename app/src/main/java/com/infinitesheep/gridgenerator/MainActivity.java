@@ -8,12 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,20 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
     private GridColorItem emptyGridColorItem = new GridColorItem(new int[] { R.color.emptyGridCell }, -1);
 
+    private List<GridColorItem> gridColorItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        gridColorItems = new ArrayList<>();
+        gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 2));
+        gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 2));
+        gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
+        gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
+
+        rerenderGridColorItems();
+
+        regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
+
         findViewById(R.id.regenerate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final List<GridColorItem> gridColorItems = new ArrayList<>();
-                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 2));
-                gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 2));
-                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
-                gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
-
                 regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
             }
         });
@@ -90,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (givenGridCellCount > rows * columns) {
             Log.e("tag!", "there are too many cells given to generate properly! :(");
-            Toast.makeText(this, "too many cells!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "grid too small for colors!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -147,6 +157,39 @@ public class MainActivity extends AppCompatActivity {
 
         public int getRandomColor(Random random) {
             return colors[random.nextInt(colors.length)];
+        }
+    }
+
+    private void rerenderGridColorItems() {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        LinearLayout listLayout = findViewById(R.id.grid_color_items);
+
+        if (listLayout != null && listLayout.getChildCount() > 0) {
+            try {
+                listLayout.removeViews (0, listLayout.getChildCount());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < gridColorItems.size(); i++) {
+            GridColorItem item = gridColorItems.get(i);
+
+            View v = inflater.inflate(R.layout.item_list_color_item, null);
+
+            ((TextView)v.findViewById(R.id.grid_item_count)).setText("" + item.cellCount);
+            v.findViewById(R.id.grid_item_color).setBackgroundColor(getResources().getColor(item.colors[0]));
+            if (item.colors.length > 1) {
+                v.findViewById(R.id.grid_item_color_2_container).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.grid_item_color_2).setBackgroundColor(getResources().getColor(item.colors[1]));
+            }
+            else {
+                v.findViewById(R.id.grid_item_color_2_container).setVisibility(View.GONE);
+            }
+
+            listLayout.addView(v, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
     }
 }

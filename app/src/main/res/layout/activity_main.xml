@@ -17,7 +17,9 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
         <Button
             android:id="@+id/regenerate"
@@ -115,6 +117,12 @@
                 android:text="5"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/grid_color_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
     </LinearLayout>
 
