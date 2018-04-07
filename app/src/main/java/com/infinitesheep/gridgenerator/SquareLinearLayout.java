@@ -24,6 +24,8 @@ public class SquareLinearLayout extends LinearLayout {
     }
 
     @Override public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        /*
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
         if (width > height) {
@@ -31,7 +33,7 @@ public class SquareLinearLayout extends LinearLayout {
         }
         else {
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
-        }
+        }*/
         //int size = width > height ? height : width;
         //setMeasuredDimension(size, size);
     }
