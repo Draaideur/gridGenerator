@@ -2,10 +2,13 @@ package com.infinitesheep.gridgenerator;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gridColorItems = new ArrayList<>();
-        gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 2));
-        gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 2));
+        gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 7));
+        gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 7));
         gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
         gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
+
+        ((EditText)findViewById(R.id.input_rows)).setText("5");
+        ((EditText)findViewById(R.id.input_columns)).setText("5");
 
         rerenderGridColorItems();
 
@@ -51,6 +57,54 @@ public class MainActivity extends AppCompatActivity {
                 regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
             }
         });
+
+        findViewById(R.id.add_grid_color_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridColorItems.add(new GridColorItem(new int[] {R.color.redGridCell}, 1));
+                rerenderGridColorItems();
+            }
+        });
+
+        findViewById(R.id.preset_codenames_5x5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridColorItems = new ArrayList<>();
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 7));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 7));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
+
+                ((EditText)findViewById(R.id.input_rows)).setText("5");
+                ((EditText)findViewById(R.id.input_columns)).setText("5");
+
+                rerenderGridColorItems();
+
+                regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            // todo this is a hack to remove the up button when returning to main activity (also the rerender eheheh)
+            ab.setDisplayHomeAsUpEnabled(false);
+            rerenderGridColorItems();
+        }
     }
 
     private Integer getUserSeed() {
@@ -146,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class GridColorItem {
+    public class GridColorItem {
         public int[] colors;
         public int cellCount;
 
@@ -165,7 +219,11 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout listLayout = findViewById(R.id.grid_color_items);
 
-        if (listLayout != null && listLayout.getChildCount() > 0) {
+        if (listLayout == null) {
+            return;
+        }
+
+        if (listLayout.getChildCount() > 0) {
             try {
                 listLayout.removeViews (0, listLayout.getChildCount());
             }
@@ -189,7 +247,41 @@ public class MainActivity extends AppCompatActivity {
                 v.findViewById(R.id.grid_item_color_2_container).setVisibility(View.GONE);
             }
 
+            final int position = i;
+            v.findViewById(R.id.delete_list_color_item).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteGridColorItem(position);
+                }
+            });
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editGridColorItem(position);
+                }
+            });
+
             listLayout.addView(v, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
+    private void deleteGridColorItem(int position) {
+        gridColorItems.remove(position);
+        rerenderGridColorItems();
+    }
+
+    private void editGridColorItem(int position) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(android.R.id.content, EditListColorItemFragment.newInstance(gridColorItems, position), "edit_list_color_item")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commit();
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
         }
     }
 }

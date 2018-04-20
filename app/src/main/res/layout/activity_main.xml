@@ -118,11 +118,38 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current colors:"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
         <LinearLayout
             android:id="@+id/grid_color_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"/>
+
+        <Button
+            android:id="@+id/add_grid_color_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Add color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or choose a preset:"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/preset_codenames_5x5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Codenames 5x5"/>
 
     </LinearLayout>
 
