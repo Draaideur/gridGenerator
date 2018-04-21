@@ -1,7 +1,6 @@
 package com.infinitesheep.gridgenerator;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,15 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +69,42 @@ public class MainActivity extends AppCompatActivity {
 
                 ((EditText)findViewById(R.id.input_rows)).setText("5");
                 ((EditText)findViewById(R.id.input_columns)).setText("5");
+
+                rerenderGridColorItems();
+
+                regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
+            }
+        });
+
+        findViewById(R.id.preset_codenames_6x6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridColorItems = new ArrayList<>();
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 11));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 11));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
+
+                ((EditText)findViewById(R.id.input_rows)).setText("6");
+                ((EditText)findViewById(R.id.input_columns)).setText("6");
+
+                rerenderGridColorItems();
+
+                regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
+            }
+        });
+
+        findViewById(R.id.preset_codenames_7x7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridColorItems = new ArrayList<>();
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 15));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blueGridCell }, 15));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell, R.color.blueGridCell }, 1));
+                gridColorItems.add(new GridColorItem(new int[] { R.color.blackGridCell }, 1));
+
+                ((EditText)findViewById(R.id.input_rows)).setText("7");
+                ((EditText)findViewById(R.id.input_columns)).setText("7");
 
                 rerenderGridColorItems();
 

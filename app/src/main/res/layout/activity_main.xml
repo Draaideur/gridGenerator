@@ -151,6 +151,20 @@
             android:layout_gravity="center_horizontal"
             android:text="Codenames 5x5"/>
 
+        <Button
+            android:id="@+id/preset_codenames_6x6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Codenames 6x6"/>
+
+        <Button
+            android:id="@+id/preset_codenames_7x7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Codenames 7x7"/>
+
     </LinearLayout>
 
 </ScrollView>

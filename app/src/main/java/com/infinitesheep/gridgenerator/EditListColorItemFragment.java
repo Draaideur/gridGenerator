@@ -2,7 +2,6 @@ package com.infinitesheep.gridgenerator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +46,7 @@ public class EditListColorItemFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        ((EditText)getView().findViewById(R.id.input_cell_count)).setText("" + gridColorItems.get(position).cellCount);
     }
 
     private Integer getCellCount() {
