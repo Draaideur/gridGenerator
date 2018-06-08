@@ -83,6 +83,38 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/grid_item_color_chosen_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chosen:"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="1dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/white">
+
+                        <com.infinitesheep.gridgenerator.SquareLinearLayout
+                            android:id="@+id/grid_item_color_chosen"
+                            android:layout_width="16dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/redGridCell"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

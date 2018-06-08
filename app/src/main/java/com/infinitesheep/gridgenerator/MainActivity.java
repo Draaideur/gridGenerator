@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
         GridColorItem[][] gridCells = new GridColorItem[columns][rows];
         for (GridColorItem item : gridColorItems) {
+            item.chooseColor(random);
             for (int i = 0; i < item.cellCount; i++) {
                 int r = random.nextInt(rows);
                 int c = random.nextInt(columns);
@@ -220,25 +221,40 @@ public class MainActivity extends AppCompatActivity {
                     colorItem = emptyGridColorItem;
                 }
                 View vv = inflater.inflate(R.layout.grid_cell, null);
-                vv.findViewById(R.id.grid_cell).setBackgroundColor(getResources().getColor(colorItem.getRandomColor(random)));
+                vv.findViewById(R.id.grid_cell).setBackgroundColor(getResources().getColor(colorItem.getChosenColor()));
                 ((LinearLayout)v).addView(vv, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
             }
             final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
             gridLayout.addView(v, layoutParams);
         }
+
+        rerenderGridColorItems();
     }
 
     public class GridColorItem {
         public int[] colors;
         public int cellCount;
+        private int chosenColor = -1;
 
         public GridColorItem(int[] colors, int cellCount) {
             this.colors = colors;
             this.cellCount = cellCount;
         }
 
-        public int getRandomColor(Random random) {
-            return colors[random.nextInt(colors.length)];
+        public void chooseColor(Random random) {
+            chosenColor = colors[random.nextInt(colors.length)];
+        }
+
+        public int getChosenColor() {
+            if (chosenColor == 0 || chosenColor == -1) {
+                if (colors.length == 1) {
+                    chosenColor = colors[0];
+                }
+                else {
+                    return R.color.black;
+                }
+            }
+            return chosenColor;
         }
     }
 
@@ -270,9 +286,12 @@ public class MainActivity extends AppCompatActivity {
             if (item.colors.length > 1) {
                 v.findViewById(R.id.grid_item_color_2_container).setVisibility(View.VISIBLE);
                 v.findViewById(R.id.grid_item_color_2).setBackgroundColor(getResources().getColor(item.colors[1]));
+                v.findViewById(R.id.grid_item_color_chosen_container).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.grid_item_color_chosen).setBackgroundColor(getResources().getColor(item.getChosenColor()));
             }
             else {
                 v.findViewById(R.id.grid_item_color_2_container).setVisibility(View.GONE);
+                v.findViewById(R.id.grid_item_color_chosen_container).setVisibility(View.GONE);
             }
 
             final int position = i;
