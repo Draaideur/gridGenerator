@@ -40,10 +40,35 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Color(s): (if multiple colors are selected, the generator will choose one of them at random, at the start of every time you generate)"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:id="@+id/grid_color_item_colors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"/>
+
+    <Button
+        android:id="@+id/add_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ add color"/>
+
     <Button
         android:id="@+id/save_grid_color_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
         android:text="Save"/>
 
