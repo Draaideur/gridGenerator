@@ -1,6 +1,7 @@
 package com.infinitesheep.gridgenerator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +32,31 @@ public class MainActivity extends AppCompatActivity {
 
     private List<GridColorItem> gridColorItems;
 
+    private AdView mAdView;
+    private boolean hasInitializedAds = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //ca-app-pub-1269610242069363~5059629491
+        MobileAds.initialize(this, "ca-app-pub-1269610242069363~5059629491");
+
+        mAdView = findViewById(R.id.adView);
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.shared_preferences_file), MODE_PRIVATE);
+        Boolean shouldShowAds = prefs.getBoolean(getString(R.string.shared_preferences_key_show_ads), true);
+        ((CheckBox)findViewById(R.id.allow_ads_checkbox)).setChecked(shouldShowAds);
+        showAds(shouldShowAds);
+        ((CheckBox)findViewById(R.id.allow_ads_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean showAds) {
+                SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shared_preferences_file), MODE_PRIVATE).edit();
+                editor.putBoolean(getString(R.string.shared_preferences_key_show_ads), showAds);
+                editor.apply();
+                showAds(showAds);
+            }
+        });
 
         gridColorItems = new ArrayList<>();
         gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 7));
@@ -111,6 +139,20 @@ public class MainActivity extends AppCompatActivity {
                 regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
             }
         });
+    }
+
+    private void showAds(boolean show) {
+        if (show) {
+            if (hasInitializedAds == false) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+                hasInitializedAds = true;
+            }
+            mAdView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mAdView.setVisibility(View.GONE);
+        }
     }
 
     @Override
