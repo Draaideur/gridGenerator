@@ -18,9 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
     private boolean hasInitializedAds = false;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +55,21 @@ public class MainActivity extends AppCompatActivity {
         ((CheckBox)findViewById(R.id.allow_ads_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean showAds) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "checkbox");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "show_ads");
+                bundle.putString("checked", showAds ? "true" : "false");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.shared_preferences_file), MODE_PRIVATE).edit();
                 editor.putBoolean(getString(R.string.shared_preferences_key_show_ads), showAds);
                 editor.apply();
                 showAds(showAds);
             }
         });
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         gridColorItems = new ArrayList<>();
         gridColorItems.add(new GridColorItem(new int[] { R.color.redGridCell }, 7));
@@ -74,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.regenerate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "button");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "regenerate_grid");
+                bundle.putString("columns", "" + getUserColumns());
+                bundle.putString("rows", "" + getUserRows());
+                bundle.putString("is_using_seed", "" + (getUserSeed() != null));
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 regenerate(getUserRows(), getUserColumns(), gridColorItems, getUserSeed());
             }
         });
@@ -143,15 +164,55 @@ public class MainActivity extends AppCompatActivity {
 
     private void showAds(boolean show) {
         if (show) {
-            if (hasInitializedAds == false) {
-                AdRequest adRequest = new AdRequest.Builder().build();
+            if (!hasInitializedAds) {
+                AdRequest adRequest = new AdRequest.Builder().addTestDevice("33D89009FBEAC655B8A74DC096D1D1B1").build();
                 mAdView.loadAd(adRequest);
                 hasInitializedAds = true;
+                mAdView.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        // Code to be executed when an ad finishes loading.
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int errorCode) {
+                        // Code to be executed when an ad request fails.
+                        switch (errorCode) {
+                            case AdRequest.ERROR_CODE_INTERNAL_ERROR:
+                                break;
+                            case AdRequest.ERROR_CODE_INVALID_REQUEST:
+                                break;
+                            case AdRequest.ERROR_CODE_NETWORK_ERROR:
+                                break;
+                            case AdRequest.ERROR_CODE_NO_FILL:
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                        // Code to be executed when an ad opens an overlay that
+                        // covers the screen.
+                    }
+
+                    @Override
+                    public void onAdLeftApplication() {
+                        // Code to be executed when the user has left the app.
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+                        // Code to be executed when when the user is about to return
+                        // to the app after tapping on an ad.
+                    }
+                });
             }
             mAdView.setVisibility(View.VISIBLE);
+            findViewById(R.id.ad_view_container).setVisibility(View.VISIBLE);
         }
         else {
             mAdView.setVisibility(View.GONE);
+            findViewById(R.id.ad_view_container).setVisibility(View.GONE);
         }
     }
 
