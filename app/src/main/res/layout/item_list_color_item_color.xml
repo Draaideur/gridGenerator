@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -13,23 +13,29 @@
         android:orientation="horizontal"
         android:background="@color/black">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="1dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:background="@color/white">
+            android:layout_marginLeft="16dp">
 
             <com.infinitesheep.gridgenerator.SquareLinearLayout
                 android:id="@+id/grid_item_color"
                 android:layout_width="16dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:background="@color/redGridCell"/>
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/bordered_rectangle_sharp_thin"/>
+
+        </android.support.constraint.ConstraintLayout>
 
         <View
             android:layout_width="0dp"

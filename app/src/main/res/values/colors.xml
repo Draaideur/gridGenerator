@@ -12,7 +12,9 @@
     <color name="greenGridCell">#669955</color>
     <color name="orangeGridCell">#FF7700</color>
     <color name="blackGridCell">#444444</color>
-    <color name="whiteGridCell">#444444</color>
+    <color name="whiteGridCell">#CCCCCC</color>
+
+    <color name="codenamesOrange">#E97840</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
