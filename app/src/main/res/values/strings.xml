@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GridGenerator</string>
+    <string name="app_name">Grid Generator</string>
     <string name="shared_preferences_file" translatable="false">GridGeneratorSharedPreferences</string>
     <string name="shared_preferences_key_show_ads" translatable="false">SHOW_ADS</string>
 </resources>
